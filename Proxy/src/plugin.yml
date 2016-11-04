@@ -1,0 +1,5 @@
+name: Proxy
+main: com.thetonyk.Proxy.Main
+version: 0.1
+author: TheTonyk
+description: Minecraft Proxy Plugin
