@@ -240,7 +240,6 @@ public class PlayersManager implements Listener {
 		
 		} catch (SQLException exception) {
 			
-			exception.printStackTrace();
 			error(event);
 			return;
 			
@@ -263,7 +262,6 @@ public class PlayersManager implements Listener {
 
 		} catch (SQLException exception) {	
 			
-			exception.printStackTrace();
 			error(event);
 			return;
 			
@@ -346,7 +344,6 @@ public class PlayersManager implements Listener {
 		
 		} catch (SQLException exception) {
 			
-			exception.printStackTrace();
 			error(event);
 			return;
 			

@@ -60,7 +60,7 @@ public class Main extends Plugin {
 				configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(config);
 				
 				configuration.set("name", "Server");
-				configuration.set("twitter", "@Server");
+				configuration.set("twitter", "@TheTonyk");
 				configuration.set("SQLHost", "localhost");
 				configuration.set("SQLDatabase", "database");
 				configuration.set("SQLUser", "user");
