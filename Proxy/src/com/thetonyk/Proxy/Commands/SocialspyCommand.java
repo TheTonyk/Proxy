@@ -103,7 +103,7 @@ public class SocialspyCommand extends Command implements TabExecutor {
 			.append("The social spy of '").color(ChatColor.GRAY)
 			.append(player.getName()).color(ChatColor.GREEN)
 			.append("' has been enabled on server '").color(ChatColor.GRAY)
-			.append(server.getName()).color(ChatColor.GOLD)
+			.append(server == null ? "all" : server.getName()).color(ChatColor.GOLD)
 			.append("'.").color(ChatColor.GRAY);
 			
 			sender.sendMessage(message.create());
@@ -112,7 +112,7 @@ public class SocialspyCommand extends Command implements TabExecutor {
 		
 		ComponentBuilder message = Main.getPrefix()
 		.append("Your social spy has been enabled on server '").color(ChatColor.GRAY)
-		.append(server.getName()).color(ChatColor.GOLD)
+		.append(server == null ? "all" : server.getName()).color(ChatColor.GOLD)
 		.append("'.").color(ChatColor.GRAY);
 		
 		player.sendMessage(message.create());

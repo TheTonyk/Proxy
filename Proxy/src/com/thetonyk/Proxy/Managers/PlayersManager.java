@@ -1,6 +1,8 @@
 package com.thetonyk.Proxy.Managers;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -66,6 +68,20 @@ public class PlayersManager implements Listener {
 		
 	}
 	
+	public static UUID getUUID(String name) throws SQLException {
+		
+		try (Connection connection = DatabaseManager.getConnection();
+		Statement statement = connection.createStatement();
+		ResultSet query = statement.executeQuery("SELECT uuid FROM users WHERE name = '" + name + "';")) {
+			
+			if (!query.next()) return null;
+				
+			return UUID.fromString(query.getString("uuid"));
+			
+		}
+		
+	}
+	
 	public static String getField(UUID uuid, String field) throws SQLException {
 		
 		try (Connection connection = DatabaseManager.getConnection();
@@ -94,6 +110,39 @@ public class PlayersManager implements Listener {
 	public static Rank getRank(UUID uuid) throws SQLException {
 		
 		return Rank.valueOf(getField(uuid, "rank"));
+		
+	}
+	
+	public static void setRank(UUID uuid, Rank rank) throws SQLException {
+		
+		DatabaseManager.updateQuery("UPDATE users SET rank = '" + rank.name() + "' WHERE uuid = '" + uuid.toString() + "';");
+		
+		ProxiedPlayer player = proxy.getPlayer(uuid);
+		
+		if (player == null) return;
+		
+		ByteArrayOutputStream array = new ByteArrayOutputStream();
+		
+		try (DataOutputStream output = new DataOutputStream(array)) {
+			
+			output.writeUTF("updateRank");
+			output.writeUTF(uuid.toString());
+			
+		} catch (IOException exception) {
+				
+			ComponentBuilder message = new ComponentBuilder("⫸ ").color(ChatColor.DARK_GRAY)
+			.append("An error has occured on ").color(ChatColor.GRAY)
+			.append(Main.name).color(ChatColor.GREEN)
+			.append(" ⫷\n\n").color(ChatColor.DARK_GRAY)
+			.append("Please try again later or contact us on Twitter ").color(ChatColor.GRAY)
+			.append(Main.twitter).color(ChatColor.AQUA);
+			
+			player.disconnect(message.create());
+			return;
+			
+		}
+		
+		player.getServer().getInfo().sendData(Main.channel, array.toByteArray(), true);
 		
 	}
 	

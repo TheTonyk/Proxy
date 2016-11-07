@@ -41,8 +41,9 @@ public class Main extends Plugin {
 	public static Map<UUID, ServerInfo> cmdspy = new HashMap<>();
 	public static Map<UUID, ServerInfo> socialspy = new HashMap<>();
 	
-	public static String name = "Server";
-	public static String twitter = "@TheTonyk";
+	public static String name;
+	public static String twitter;
+	public static String channel;
 	
 	public void onEnable() {
 		
@@ -61,6 +62,7 @@ public class Main extends Plugin {
 				
 				configuration.set("name", "Server");
 				configuration.set("twitter", "@TheTonyk");
+				configuration.set("channel", "server");
 				configuration.set("SQLHost", "localhost");
 				configuration.set("SQLDatabase", "database");
 				configuration.set("SQLUser", "user");
@@ -84,6 +86,7 @@ public class Main extends Plugin {
 		
 		name = configuration.getString("name", "Server");
 		twitter = configuration.getString("twitter", "@TheTonyk");
+		channel = configuration.getString("channel", "server");
 		
 		try {
 			
@@ -108,6 +111,8 @@ public class Main extends Plugin {
 				classes.remove();
 				
 			}
+			
+			proxy.registerChannel(channel);
 			
 		} catch (InstantiationException | IllegalAccessException | IOException exception) {
 			
