@@ -80,7 +80,7 @@ public class CommandspyCommand extends Command implements TabExecutor {
 			if (!sender.getName().equalsIgnoreCase(player.getName())) {
 				
 				ComponentBuilder message = Main.getPrefix()
-				.append("The command spy of '").color(ChatColor.GRAY)
+				.append("The cmdspy of '").color(ChatColor.GRAY)
 				.append(player.getName()).color(ChatColor.GREEN)
 				.append("' has been disabled.").color(ChatColor.GRAY);
 				
@@ -88,7 +88,7 @@ public class CommandspyCommand extends Command implements TabExecutor {
 				
 			}
 			
-			ComponentBuilder message = Main.getPrefix().append("Your command spy has been disabled.").color(ChatColor.GRAY);
+			ComponentBuilder message = Main.getPrefix().append("Your cmdspy has been disabled.").color(ChatColor.GRAY);
 			
 			player.sendMessage(message.create());
 			return;
@@ -100,9 +100,9 @@ public class CommandspyCommand extends Command implements TabExecutor {
 		if (!sender.getName().equalsIgnoreCase(player.getName())) {
 			
 			ComponentBuilder message = Main.getPrefix()
-			.append("The command spy of '").color(ChatColor.GRAY)
+			.append("The cmdspy of '").color(ChatColor.GRAY)
 			.append(player.getName()).color(ChatColor.GREEN)
-			.append("' has been enabled on server '").color(ChatColor.GRAY)
+			.append("' has been enabled on '").color(ChatColor.GRAY)
 			.append(server == null ? "all" : server.getName()).color(ChatColor.GOLD)
 			.append("'.").color(ChatColor.GRAY);
 			
@@ -111,7 +111,7 @@ public class CommandspyCommand extends Command implements TabExecutor {
 		}
 		
 		ComponentBuilder message = Main.getPrefix()
-		.append("Your command spy has been enabled on server '").color(ChatColor.GRAY)
+		.append("Your cmdspy has been enabled on '").color(ChatColor.GRAY)
 		.append(server == null ? "all" : server.getName()).color(ChatColor.GOLD)
 		.append("'.").color(ChatColor.GRAY);
 		

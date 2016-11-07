@@ -49,6 +49,7 @@ public class PermissionsManager {
 		player.setPermission("proxy.seeips", true);
 		player.setPermission("proxy.cancelpunishments", true);
 		player.setPermission("proxy.globalbroadcast", true);
+		player.setPermission("proxy.rank", true);
 		player.addGroups("admin");
 		
 	}

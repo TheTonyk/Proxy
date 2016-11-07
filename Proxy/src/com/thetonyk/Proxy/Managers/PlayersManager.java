@@ -121,6 +121,8 @@ public class PlayersManager implements Listener {
 		
 		if (player == null) return;
 		
+		PermissionsManager.reloadPermissions(player);
+		
 		ByteArrayOutputStream array = new ByteArrayOutputStream();
 		
 		try (DataOutputStream output = new DataOutputStream(array)) {
@@ -301,6 +303,7 @@ public class PlayersManager implements Listener {
 		
 		ProxiedPlayer player = event.getPlayer();
 		UUID uuid = player.getUniqueId();
+		ServerInfo server = player.getServer().getInfo();
 		
 		long time = new Date().getTime();
 		
@@ -315,6 +318,11 @@ public class PlayersManager implements Listener {
 			return;
 			
 		}
+		
+		if (!player.hasPermission("proxy.cmdspy")) return;
+			
+		Main.cmdspy.put(uuid, server);
+		Main.socialspy.put(uuid, server);
 		
 	}
 	
