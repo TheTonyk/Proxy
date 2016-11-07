@@ -43,6 +43,8 @@ public class DatabaseManager {
 	
 	public static void close() throws SQLException {
 		
+		if (data == null) return;
+		
 		data.close();
 		data = null;
 		
