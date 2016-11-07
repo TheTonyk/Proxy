@@ -32,6 +32,7 @@ import com.google.gson.Gson;
 import com.thetonyk.Proxy.Main;
 import com.thetonyk.Proxy.Managers.PermissionsManager.Rank;
 import com.thetonyk.Proxy.Managers.PunishmentsManager.Punishment;
+import com.thetonyk.Proxy.Utils.DateUtils;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.Favicon;
@@ -434,65 +435,87 @@ public class PlayersManager implements Listener {
 		ProxiedPlayer player = (ProxiedPlayer) sender;
 		UUID uuid = player.getUniqueId();
 		ServerInfo server = player.getServer().getInfo();
-		Rank rank;
+		
 		
 		try {
 			
-			rank = getRank(uuid);
+			Rank rank = getRank(uuid);
 			
+			if (!player.hasPermission("proxy.chat")) {
+			
+				if (!cooldown.add(uuid)) {
+					
+					event.setCancelled(true);
+					return;
+					
+				}
+				
+				proxy.getScheduler().schedule(Main.plugin, new Runnable() {
+		
+					public void run() {
+						
+						cooldown.remove(uuid);
+						
+					}
+					
+				}, 2, TimeUnit.SECONDS);
+			
+			}
+			
+			String command = event.getMessage().substring(1).split(" ")[0];
+			
+			if (event.isCommand() && !hiddenCommands.contains(command.toLowerCase())) {
+				
+				if (rank != Rank.ADMIN) {
+					
+					BaseComponent[] message = new ComponentBuilder(player.getName()).color(ChatColor.DARK_BLUE)
+					.append(" ⫸ ").color(ChatColor.DARK_GRAY)
+					.append(event.getMessage()).color(ChatColor.GRAY).italic(true).create();
+					
+					Main.cmdspy.keySet().stream().filter(u -> !u.equals(uuid) && (Main.cmdspy.get(u).equals(server) || Main.cmdspy.get(u) == null) && proxy.getPlayer(u) != null).forEach(u -> proxy.getPlayer(u).sendMessage(message));
+					
+				}
+				
+				return;
+				
+			}
+			
+			int muted = PunishmentsManager.isPunished(uuid, Punishment.MUTE);
+			
+			if (muted >= 0) {
+				
+				event.setCancelled(true);
+				
+				long duration = Long.valueOf(PunishmentsManager.getField(muted, "duration"));
+				long date = Long.valueOf(PunishmentsManager.getField(muted, "date"));
+				String time = DateUtils.toShortText(duration - (new Date().getTime() - date), true);
+				
+				ComponentBuilder message = Main.getPrefix()
+				.append("You are muted for: ").color(ChatColor.GRAY)
+				.append(time).color(ChatColor.GREEN)
+				.append(".").color(ChatColor.GRAY);
+				
+				player.sendMessage(message.create());
+				return;
+				
+			}
+	
+			if (Main.muted.contains(null) || Main.muted.contains(server)) {
+				
+				ComponentBuilder message = Main.getPrefix().append("The chat is currently muted.").color(ChatColor.GRAY);
+				
+				event.setCancelled(true);
+				player.sendMessage(message.create());
+				return;
+				
+			}
+		
 		} catch (SQLException exception) {
 			
 			ComponentBuilder message = Main.getPrefix().append("An error has occured while sending your message. Please try again later.");
 			
 			player.sendMessage(message.create());
 			event.setCancelled(true);
-			return;
-			
-		}
-		
-		if (!player.hasPermission("proxy.chat")) {
-		
-			if (!cooldown.add(uuid)) {
-				
-				event.setCancelled(true);
-				return;
-				
-			}
-			
-			proxy.getScheduler().schedule(Main.plugin, new Runnable() {
-	
-				public void run() {
-					
-					cooldown.remove(uuid);
-					
-				}
-				
-			}, 2, TimeUnit.SECONDS);
-		
-		}
-		
-		if (event.isCommand()) {
-			
-			String command = event.getMessage().substring(1).split(" ")[0];
-			
-			if (!hiddenCommands.contains(command.toLowerCase()) && rank != Rank.ADMIN) {
-				
-				BaseComponent[] message = new ComponentBuilder(player.getName()).color(ChatColor.DARK_BLUE)
-				.append(" ⫸ ").color(ChatColor.DARK_GRAY)
-				.append(event.getMessage()).color(ChatColor.GRAY).italic(true).create();
-				
-				Main.cmdspy.keySet().stream().filter(u -> !u.equals(uuid) && (Main.cmdspy.get(u).equals(server) || Main.cmdspy.get(u) == null) && proxy.getPlayer(u) != null).forEach(u -> proxy.getPlayer(u).sendMessage(message));
-				
-			}
-			
-		}
-
-		if (Main.muted.contains(null) || Main.muted.contains(server)) {
-			
-			ComponentBuilder message = Main.getPrefix().append("The chat is currently muted.").color(ChatColor.GRAY);
-			
-			event.setCancelled(true);
-			player.sendMessage(message.create());
 			return;
 			
 		}

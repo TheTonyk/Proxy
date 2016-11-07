@@ -60,7 +60,7 @@ public class UnpunishCommand extends Command {
 			
 			int playerId = Integer.valueOf(PlayersManager.getField(player.getUniqueId(), "id"));
 			
-			DatabaseManager.updateQuery("UPDATE cancelled = " + playerId + " WHERE id = " + id + ";");
+			DatabaseManager.updateQuery("UPDATE punishments SET cancelled = " + playerId + " WHERE id = " + id + ";");
 			
 			
 		} catch (SQLException exception) {

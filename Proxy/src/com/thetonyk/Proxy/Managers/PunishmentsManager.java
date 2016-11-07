@@ -43,15 +43,19 @@ public class PunishmentsManager {
 		ProxiedPlayer player = proxy.getPlayer(uuid);
 		
 		if (player == null) return true;
-			
-		Collection<ProxiedPlayer> onlines = player.getServer().getInfo().getPlayers();
-		BaseComponent[] message = getMessage(reason, type, duration);
 		
-		player.disconnect(message);
+		if (type != Punishment.MUTE) {
+			
+			BaseComponent[] message = getMessage(reason, type, duration);
+			
+			player.disconnect(message);
+			
+		}
 		
 		if (!type.withDuration()) return true;
 			
 		BaseComponent[] announce = getAnnouncement(player.getName(), reason, type, duration);
+		Collection<ProxiedPlayer> onlines = player.getServer().getInfo().getPlayers();
 		onlines.stream().forEach(p -> p.sendMessage(announce));
 		
 		if (type != Punishment.BAN) return true;
