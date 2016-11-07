@@ -5,10 +5,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
 
 import com.google.common.collect.Lists;
+import com.google.gson.Gson;
 import com.thetonyk.Proxy.Main;
 import com.thetonyk.Proxy.Managers.PermissionsManager.Rank;
 import com.thetonyk.Proxy.Managers.PunishmentsManager.Punishment;
@@ -79,6 +85,16 @@ public class PlayersManager implements Listener {
 			return UUID.fromString(query.getString("uuid"));
 			
 		}
+		
+	}
+	
+	public static List<PlayerName> getPreviousNames(UUID uuid) throws MalformedURLException, IOException {
+		
+		URLConnection connection = new URL(String.format("https://api.mojang.com/user/profiles/%s/names", uuid.toString().replaceAll("-", ""))).openConnection();
+		InputStreamReader input = new InputStreamReader(connection.getInputStream());
+		PlayerName[] names = new Gson().fromJson(input, PlayerName[].class);
+		
+		return new ArrayList<PlayerName>(Arrays.asList(names));
 		
 	}
 	
@@ -303,7 +319,7 @@ public class PlayersManager implements Listener {
 		
 		ProxiedPlayer player = event.getPlayer();
 		UUID uuid = player.getUniqueId();
-		ServerInfo server = player.getServer().getInfo();
+		ServerInfo server = proxy.getServerInfo("lobby");
 		
 		long time = new Date().getTime();
 		
@@ -478,6 +494,31 @@ public class PlayersManager implements Listener {
 			event.setCancelled(true);
 			player.sendMessage(message.create());
 			return;
+			
+		}
+		
+	}
+	
+	public static class PlayerName {
+		
+		private long changedToAt;
+		private String name;
+		
+		public String getName() {
+			
+			return this.name;
+			
+		}
+		
+		public long getChangeTime() {
+			
+			return this.changedToAt;
+			
+		}
+		
+		public boolean isFirstName() {
+			
+			return this.changedToAt <= 0;
 			
 		}
 		

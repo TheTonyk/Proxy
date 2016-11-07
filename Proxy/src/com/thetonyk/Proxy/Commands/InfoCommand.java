@@ -1,5 +1,6 @@
 package com.thetonyk.Proxy.Commands;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -265,6 +267,30 @@ public class InfoCommand extends Command implements TabExecutor {
 				
 			}
 			
+			List<PlayersManager.PlayerName> names = PlayersManager.getPreviousNames(uuid);
+			Iterator<PlayersManager.PlayerName> iterator = names.iterator();
+			
+			message = new ComponentBuilder("⫸ ").color(ChatColor.DARK_GRAY)
+			.append("Previous names of this player:").color(ChatColor.GRAY);
+			
+			sender.sendMessage(message.create());
+			
+			while (iterator.hasNext()) {
+				
+				PlayersManager.PlayerName oldName = iterator.next();
+				iterator.remove();
+				
+				message = new ComponentBuilder("⫸   ").color(ChatColor.DARK_GRAY)
+				.append(oldName.getName()).color(ChatColor.GOLD)
+				.append(" | ").color(ChatColor.DARK_GRAY);
+				
+				if (oldName.isFirstName()) message.append("First name").color(ChatColor.GRAY);
+				else message.append(format.format(oldName.getChangeTime())).color(ChatColor.GRAY);
+				
+				sender.sendMessage(message.create());
+				
+			}
+			
 			if (punishments.isEmpty()) return;
 			
 			message = new ComponentBuilder("⫸ ").color(ChatColor.DARK_GRAY)
@@ -356,7 +382,7 @@ public class InfoCommand extends Command implements TabExecutor {
 				
 			}
 	
-		} catch (SQLException exception) {
+		} catch (SQLException | IOException exception) {
 			
 			ComponentBuilder error = Main.getPrefix().append("An error has occured while processing the command. Please try again later.").color(ChatColor.GRAY);
 			sender.sendMessage(error.create());
