@@ -37,7 +37,6 @@ public class Main extends Plugin {
 	private static Configuration configuration = null;
 	
 	public static Set<ServerInfo> muted = new HashSet<>();
-	public static Map<UUID, Settings> settings = new HashMap<>();
 	public static Map<UUID, ServerInfo> cmdspy = new HashMap<>();
 	public static Map<UUID, ServerInfo> socialspy = new HashMap<>();
 	

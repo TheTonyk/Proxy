@@ -114,17 +114,6 @@ public class PlayersManager implements Listener {
 		
 	}
 	
-	public static Settings getSettings(UUID uuid) throws SQLException {
-		
-		if (Main.settings.containsKey(uuid)) return Main.settings.get(uuid);
-		
-		Settings settings = Settings.getSettings(uuid);
-		
-		Main.settings.put(uuid, settings);
-		return settings;
-		
-	}
-	
 	public static Rank getRank(UUID uuid) throws SQLException {
 		
 		return Rank.valueOf(getField(uuid, "rank"));
@@ -363,8 +352,6 @@ public class PlayersManager implements Listener {
 			proxy.getLogger().severe("[PlayersManager] Unable to update last quit date of player '" + uuid.toString() + "'.");
 			
 		}
-		
-		if (Main.settings.containsKey(uuid)) Main.settings.remove(uuid);
 		
 	}
 	

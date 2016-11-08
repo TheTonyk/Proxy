@@ -73,8 +73,8 @@ public class ReplyCommand extends Command {
 		
 		try {
 			
-			senderSettings = PlayersManager.getSettings(player.getUniqueId());
-			sendToSettings = PlayersManager.getSettings(sendTo.getUniqueId());
+			senderSettings = Settings.getSettings(player.getUniqueId());
+			sendToSettings = Settings.getSettings(sendTo.getUniqueId());
 			senderRank = PlayersManager.getRank(player.getUniqueId());
 			sendToRank = PlayersManager.getRank(sendTo.getUniqueId());
 			
