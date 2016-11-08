@@ -112,8 +112,6 @@ public class Main extends Plugin {
 				
 			}
 			
-			proxy.registerChannel(channel);
-			
 		} catch (InstantiationException | IllegalAccessException | IOException exception) {
 			
 			proxy.getLogger().severe("[Main] Unable to register listeners and commands !");
@@ -121,6 +119,8 @@ public class Main extends Plugin {
 			return;
 			
 		}
+		
+		proxy.registerChannel(channel);
 		
 	}
 	
@@ -140,10 +140,10 @@ public class Main extends Plugin {
 		
 	}
 	
-	private List<Class<?>> getClasses(List<String> excludes) throws IOException {
+	private static List<Class<?>> getClasses(List<String> excludes) throws IOException {
 		
 		List<Class<?>> classes = new ArrayList<Class<?>>();
-		JarFile jar = new JarFile(this.getFile());
+		JarFile jar = new JarFile(Main.plugin.getFile());
 		Enumeration<JarEntry> entries = jar.entries();
 		
 		if (excludes == null) excludes = new ArrayList<>();

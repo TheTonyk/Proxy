@@ -52,6 +52,7 @@ import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.event.ProxyPingEvent;
 import net.md_5.bungee.api.event.ServerConnectedEvent;
+import net.md_5.bungee.api.event.TabCompleteResponseEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
@@ -517,6 +518,21 @@ public class PlayersManager implements Listener {
 			player.sendMessage(message.create());
 			event.setCancelled(true);
 			return;
+			
+		}
+		
+	}
+	
+	@EventHandler
+	public void on(TabCompleteResponseEvent event) {
+		
+		Iterator<String> iterator = event.getSuggestions().iterator();
+		
+		while (iterator.hasNext()) {
+			
+			String complete = iterator.next();
+			
+			if (complete.contains(":")) iterator.remove();
 			
 		}
 		
