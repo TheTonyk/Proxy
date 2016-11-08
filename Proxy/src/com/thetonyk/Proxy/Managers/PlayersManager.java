@@ -364,6 +364,8 @@ public class PlayersManager implements Listener {
 			
 		}
 		
+		if (Main.settings.containsKey(uuid)) Main.settings.remove(uuid);
+		
 	}
 	
 	@EventHandler
