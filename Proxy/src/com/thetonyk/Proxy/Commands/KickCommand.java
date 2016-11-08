@@ -4,7 +4,12 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import com.thetonyk.Proxy.Main;
 import com.thetonyk.Proxy.Managers.DatabaseManager;
@@ -23,8 +28,9 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
+import net.md_5.bungee.api.plugin.TabExecutor;
 
-public class KickCommand extends Command {
+public class KickCommand extends Command implements TabExecutor {
 
 	private static ProxyServer proxy = ProxyServer.getInstance();
 	public static Punishment type = Punishment.KICK;
@@ -220,6 +226,33 @@ public class KickCommand extends Command {
 			return;
 			
 		}
+		
+	}
+	
+	public List<String> onTabComplete(CommandSender sender, String[] args) {
+		
+		List<String> suggestions = new ArrayList<>();
+		
+		switch (args.length) {
+		
+			case 1:
+				Set<String> online = new HashSet<>();
+				
+				proxy.getPlayers().stream().forEach(p -> online.add(p.getName()));
+				suggestions.addAll(online);
+				break;
+			default:
+				break;
+				
+		}
+		
+		if (!args[args.length - 1].isEmpty()) {
+			
+			suggestions = suggestions.stream().filter(s -> s.toLowerCase().startsWith(args[args.length - 1].toLowerCase())).collect(Collectors.toList());
+			
+		}
+		
+		return suggestions;
 		
 	}
 	

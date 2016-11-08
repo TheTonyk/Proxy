@@ -399,7 +399,6 @@ public class InfoCommand extends Command implements TabExecutor {
 		switch (args.length) {
 		
 			case 1:
-				
 				Set<String> online = new HashSet<>();
 				
 				proxy.getPlayers().stream().forEach(p -> online.add(p.getName()));
