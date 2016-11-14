@@ -222,15 +222,8 @@ public class PlayersManager implements Listener {
 	public void onPing(ProxyPingEvent event) {
 		
 		ServerPing response = new ServerPing();
-		
 		ServerPing.Protocol version = new ServerPing.Protocol("§61.8 §7only", 47);
-		ServerPing.PlayerInfo[] playersInfo = new ServerPing.PlayerInfo[3];
-		
-		playersInfo[0] = new ServerPing.PlayerInfo(" ", UUID.randomUUID());
-		playersInfo[1] = new ServerPing.PlayerInfo(" ", UUID.randomUUID());
-		playersInfo[2] = new ServerPing.PlayerInfo(" ", UUID.randomUUID());
-		
-		ServerPing.Players players = new ServerPing.Players(500, proxy.getOnlineCount(), playersInfo);
+		ServerPing.Players players = new ServerPing.Players(500, proxy.getOnlineCount(), null);
 		
 		ComponentBuilder description = new ComponentBuilder("Test");
 		
@@ -361,10 +354,11 @@ public class PlayersManager implements Listener {
 		ProxiedPlayer player = event.getPlayer();
 		UUID uuid = player.getUniqueId();
 		String name = player.getName();
+		ServerInfo server = event.getServer().getInfo();
 		Set<UUID> alts;
 		
-		if (Main.cmdspy.containsKey(uuid) && Main.cmdspy.get(uuid) != null) Main.cmdspy.put(uuid, event.getServer().getInfo());
-		if (Main.socialspy.containsKey(uuid) && Main.socialspy.get(uuid) != null) Main.socialspy.put(uuid, event.getServer().getInfo());
+		if (Main.cmdspy.containsKey(uuid) && Main.cmdspy.get(uuid) != null) Main.cmdspy.put(uuid, server);
+		if (Main.socialspy.containsKey(uuid) && Main.socialspy.get(uuid) != null) Main.socialspy.put(uuid, server);
 
 		try {
 			
@@ -404,7 +398,7 @@ public class PlayersManager implements Listener {
 			}
 			
 			BaseComponent[] alert = message.append(".").retain(FormatRetention.NONE).color(ChatColor.GRAY).create();
-			proxy.getPlayers().stream().filter(p -> p.hasPermission("proxy.alerts")).forEach(p -> p.sendMessage(alert));
+			proxy.getPlayers().stream().filter(p -> p.hasPermission("proxy.alerts")).filter(p -> p.getServer().getInfo().equals(server)).forEach(p -> p.sendMessage(alert));
 		
 		} catch (SQLException exception) {
 			

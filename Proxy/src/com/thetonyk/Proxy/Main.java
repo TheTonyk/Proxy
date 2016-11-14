@@ -17,7 +17,6 @@ import java.util.jar.JarFile;
 
 import com.google.common.collect.Lists;
 import com.thetonyk.Proxy.Managers.DatabaseManager;
-import com.thetonyk.Proxy.Managers.Settings;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
