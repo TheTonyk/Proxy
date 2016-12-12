@@ -225,7 +225,7 @@ public class PlayersManager implements Listener {
 		ServerPing.Protocol version = new ServerPing.Protocol("§61.8 §7only", 47);
 		ServerPing.Players players = new ServerPing.Players(500, proxy.getOnlineCount(), null);
 		
-		ComponentBuilder description = new ComponentBuilder(Main.getConfiguration().getString("motd", "                    §6§k|||§r §a§lCommandsPVP §r§6§k|||"));
+		ComponentBuilder description = new ComponentBuilder(Main.getConfiguration().getString("motd1", "                    §6§k|||§r §a§lCommandsPVP §r§6§k|||§r") + "\n" + Main.getConfiguration().getString("motd2", ""));
 		
 		response.setDescriptionComponent(description.create()[0]);
 		response.setPlayers(players);

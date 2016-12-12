@@ -65,7 +65,8 @@ public class Main extends Plugin {
 				configuration.set("SQLDatabase", "database");
 				configuration.set("SQLUser", "user");
 				configuration.set("SQLPass", "pass");
-				configuration.set("motd", "                    §6§k|||§r §a§lCommandsPVP §r§6§k|||");
+				configuration.set("motd1", "                    §6§k|||§r §a§lCommandsPVP §r§6§k|||§r");
+				configuration.set("motd2", "");
 				
 				ConfigurationProvider.getProvider(YamlConfiguration.class).save(configuration, config);
 				
