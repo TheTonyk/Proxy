@@ -209,7 +209,7 @@ public class PunishmentsManager {
 		.append("You are ").color(ChatColor.GRAY)
 		.append(type.getVerb().toLowerCase()).color(ChatColor.GOLD)
 		.append(" from ").color(ChatColor.GRAY)
-		.append(Main.name).color(ChatColor.GREEN)
+		.append(Main.NAME).color(ChatColor.GREEN)
 		.append(" ⫷\n\n").color(ChatColor.DARK_GRAY)
 		.append("Reason ").color(ChatColor.GOLD)
 		.append("⫸ ").color(ChatColor.DARK_GRAY)
@@ -228,7 +228,7 @@ public class PunishmentsManager {
 			.append(time).color(ChatColor.GRAY)
 			.append("\n\n⫸ ").color(ChatColor.DARK_GRAY)
 			.append("To appeal, contact us on Twitter ").color(ChatColor.GRAY)
-			.append(Main.twitter).color(ChatColor.AQUA)
+			.append(Main.TWITTER).color(ChatColor.AQUA)
 			.append(" ⫷").color(ChatColor.DARK_GRAY);
 			
 		}
@@ -240,10 +240,10 @@ public class PunishmentsManager {
 	private static String getBanMessage(Reasons reason, Punishment type, long duration) {
 		
 		String time = duration < 0 ? "ever" : DateUtils.toText(duration, false);
-		String message = "§8⫸ §7You are §6" + type.getVerb().toLowerCase() + "§7 from §a" + Main.name + " §8⫷\n\n§6Reason §8⫸ §7" + reason.getName();
+		String message = "§8⫸ §7You are §6" + type.getVerb().toLowerCase() + "§7 from §a" + Main.NAME + " §8⫷\n\n§6Reason §8⫸ §7" + reason.getName();
 		
 		if (!type.withDuration()) message += "§8\n\n⫸ §7This is not a ban §8⫷";
-		else message += "§6\nExpire §8⫸ §7" + time + "§8\n\n⫸ §7To appeal, contact us on Twitter §b" + Main.twitter + " §8⫷";
+		else message += "§6\nExpire §8⫸ §7" + time + "§8\n\n⫸ §7To appeal, contact us on Twitter §b" + Main.TWITTER + " §8⫷";
 		
 		return message;
 		
@@ -257,7 +257,7 @@ public class PunishmentsManager {
 		.append("You are IP ").color(ChatColor.GRAY)
 		.append(type.getVerb().toLowerCase()).color(ChatColor.GOLD)
 		.append(" from ").color(ChatColor.GRAY)
-		.append(Main.name).color(ChatColor.GREEN)
+		.append(Main.NAME).color(ChatColor.GREEN)
 		.append(" ⫷\n\n").color(ChatColor.DARK_GRAY)
 		.append("Due to account(s) ").color(ChatColor.GOLD)
 		.append("⫸ ").color(ChatColor.DARK_GRAY)
@@ -273,7 +273,7 @@ public class PunishmentsManager {
 			
 			message.append("\n\n⫸ ").color(ChatColor.DARK_GRAY)
 			.append("To appeal, contact us on Twitter ").color(ChatColor.GRAY)
-			.append(Main.twitter).color(ChatColor.AQUA)
+			.append(Main.TWITTER).color(ChatColor.AQUA)
 			.append(" ⫷").color(ChatColor.DARK_GRAY);
 			
 		}
@@ -284,7 +284,7 @@ public class PunishmentsManager {
 	
 	private static String getIPBanMessage(Set<UUID> dueTo, Punishment type) throws SQLException {
 		
-		String message = "§8⫸ §7You are IP §6" + type.getVerb().toLowerCase() + " §7from §a" + Main.name + " §8⫷\n\n§6Due to account(s) §8⫸ §7";
+		String message = "§8⫸ §7You are IP §6" + type.getVerb().toLowerCase() + " §7from §a" + Main.NAME + " §8⫷\n\n§6Due to account(s) §8⫸ §7";
 		
 		for (UUID player : dueTo) {
 			
@@ -296,7 +296,7 @@ public class PunishmentsManager {
 		message = message.substring(0, message.length() - 2);
 		
 		if (!type.withDuration()) message += "§8\n\n⫸ §7This is not a ban §8⫷";
-		else message += "§8\n\n⫸ §7To appeal, contact us on Twitter §b" + Main.twitter + " §8⫷";
+		else message += "§8\n\n⫸ §7To appeal, contact us on Twitter §b" + Main.TWITTER + " §8⫷";
 		
 		return message;
 		

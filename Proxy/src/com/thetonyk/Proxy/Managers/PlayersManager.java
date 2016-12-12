@@ -141,17 +141,17 @@ public class PlayersManager implements Listener {
 				
 			ComponentBuilder message = new ComponentBuilder("⫸ ").color(ChatColor.DARK_GRAY)
 			.append("An error has occured on ").color(ChatColor.GRAY)
-			.append(Main.name).color(ChatColor.GREEN)
+			.append(Main.NAME).color(ChatColor.GREEN)
 			.append(" ⫷\n\n").color(ChatColor.DARK_GRAY)
 			.append("Please try again later or contact us on Twitter ").color(ChatColor.GRAY)
-			.append(Main.twitter).color(ChatColor.AQUA);
+			.append(Main.TWITTER).color(ChatColor.AQUA);
 			
 			player.disconnect(message.create());
 			return;
 			
 		}
 		
-		player.getServer().getInfo().sendData(Main.channel, array.toByteArray(), true);
+		player.getServer().getInfo().sendData(Main.CHANNEL, array.toByteArray(), true);
 		
 	}
 	
@@ -186,7 +186,7 @@ public class PlayersManager implements Listener {
 	
 	private static void error(LoginEvent event) {
 		
-		event.setCancelReason("§8⫸ §7An error has occured while connecting to §a" + Main.name + " §8⫷\n\n§7Please try again later or contact us on Twitter §b" + Main.twitter);
+		event.setCancelReason("§8⫸ §7An error has occured while connecting to §a" + Main.NAME + " §8⫷\n\n§7Please try again later or contact us on Twitter §b" + Main.TWITTER);
 		event.setCancelled(true);
 		
 	}
@@ -209,10 +209,10 @@ public class PlayersManager implements Listener {
 		
 		ComponentBuilder message = new ComponentBuilder("⫸ ").color(ChatColor.DARK_GRAY)
 		.append("An error has occured while connecting to ").color(ChatColor.GRAY)
-		.append(Main.name).color(ChatColor.GREEN)
+		.append(Main.NAME).color(ChatColor.GREEN)
 		.append(" ⫷\n\n").color(ChatColor.DARK_GRAY)
 		.append("Please try again later or contact us on Twitter ").color(ChatColor.GRAY)
-		.append(Main.twitter).color(ChatColor.AQUA);
+		.append(Main.TWITTER).color(ChatColor.AQUA);
 		
 		player.disconnect(message.create());
 		
@@ -225,7 +225,7 @@ public class PlayersManager implements Listener {
 		ServerPing.Protocol version = new ServerPing.Protocol("§61.8 §7only", 47);
 		ServerPing.Players players = new ServerPing.Players(500, proxy.getOnlineCount(), null);
 		
-		ComponentBuilder description = new ComponentBuilder("Test");
+		ComponentBuilder description = new ComponentBuilder(Main.getConfiguration().getString("motd", "                    §6§k|||§r §a§lCommandsPVP §r§6§k|||"));
 		
 		response.setDescriptionComponent(description.create()[0]);
 		response.setPlayers(players);

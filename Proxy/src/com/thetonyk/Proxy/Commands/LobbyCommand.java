@@ -55,7 +55,7 @@ public class LobbyCommand extends Command {
 				.append("An error has occured while connecting to the server").color(ChatColor.GRAY)
 				.append(" ⫷\n\n").color(ChatColor.DARK_GRAY)
 				.append("Please try again later or contact us on Twitter ").color(ChatColor.GRAY)
-				.append(Main.twitter).color(ChatColor.AQUA);
+				.append(Main.TWITTER).color(ChatColor.AQUA);
 				
 				player.disconnect(message.create());
 				

@@ -39,9 +39,9 @@ public class Main extends Plugin {
 	public static Map<UUID, ServerInfo> cmdspy = new HashMap<>();
 	public static Map<UUID, ServerInfo> socialspy = new HashMap<>();
 	
-	public static String name;
-	public static String twitter;
-	public static String channel;
+	public static String NAME;
+	public static String TWITTER;
+	public static String CHANNEL;
 	
 	public void onEnable() {
 		
@@ -65,6 +65,7 @@ public class Main extends Plugin {
 				configuration.set("SQLDatabase", "database");
 				configuration.set("SQLUser", "user");
 				configuration.set("SQLPass", "pass");
+				configuration.set("motd", "                    §6§k|||§r §a§lCommandsPVP §r§6§k|||");
 				
 				ConfigurationProvider.getProvider(YamlConfiguration.class).save(configuration, config);
 				
@@ -77,14 +78,14 @@ public class Main extends Plugin {
 		} catch (IOException exception) {
 			
 			proxy.getLogger().severe("[Main] Unable to get configuration !");
-			proxy.stop("§8⫸ §7An error has occured while starting §a" + Main.name + " §8⫷");
+			proxy.stop("§8⫸ §7An error has occured while starting the server §8⫷");
 			return;
 			
 		}
 		
-		name = configuration.getString("name", "Server");
-		twitter = configuration.getString("twitter", "@TheTonyk");
-		channel = configuration.getString("channel", "server");
+		NAME = configuration.getString("name", "Server");
+		TWITTER = configuration.getString("twitter", "@TheTonyk");
+		CHANNEL = configuration.getString("channel", "server");
 		
 		try {
 			
@@ -113,12 +114,12 @@ public class Main extends Plugin {
 		} catch (InstantiationException | IllegalAccessException | IOException exception) {
 			
 			proxy.getLogger().severe("[Main] Unable to register listeners and commands !");
-			proxy.stop("§8⫸ §7An error has occured while starting §a" + Main.name + " §8⫷");
+			proxy.stop("§8⫸ §7An error has occured while starting §a" + Main.NAME + " §8⫷");
 			return;
 			
 		}
 		
-		proxy.registerChannel(channel);
+		proxy.registerChannel(CHANNEL);
 		
 	}
 	
@@ -177,7 +178,7 @@ public class Main extends Plugin {
 	
 	public static ComponentBuilder getPrefix() {
 		
-		return new ComponentBuilder(name + " ").color(ChatColor.BLUE).bold(true).append("⫸ ").color(ChatColor.DARK_GRAY).bold(false);
+		return new ComponentBuilder(NAME + " ").color(ChatColor.BLUE).bold(true).append("⫸ ").color(ChatColor.DARK_GRAY).bold(false);
 		
 	}
 	

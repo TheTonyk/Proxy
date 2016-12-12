@@ -37,12 +37,12 @@ public class HelpCommand extends Command {
 		
 		message = new ComponentBuilder("⫸ ").color(ChatColor.DARK_GRAY)
 		.append("Twitter: ").color(ChatColor.GRAY)
-		.append(Main.twitter).color(ChatColor.AQUA).italic(true)
+		.append(Main.TWITTER).color(ChatColor.AQUA).italic(true)
 		.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
 			new ComponentBuilder("Visit our ").color(ChatColor.GRAY)
 			.append("Twitter").color(ChatColor.GREEN)
 			.append(".").color(ChatColor.GRAY).create()))
-		.event(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://twitter.com/" + Main.twitter.substring(1)));
+		.event(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://twitter.com/" + Main.TWITTER.substring(1)));
 		
 		sender.sendMessage(message.create());
 		

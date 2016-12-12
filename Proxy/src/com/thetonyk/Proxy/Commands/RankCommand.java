@@ -62,7 +62,7 @@ public class RankCommand extends Command implements TabExecutor {
 			
 			PlayersManager.setRank(uuid, rank);
 			
-			if (!sender.getName().equalsIgnoreCase(player.getName()) && player != null) {
+			if (player != null && !sender.getName().equalsIgnoreCase(player.getName())) {
 					
 					ComponentBuilder message = Main.getPrefix()
 					.append("Your rank has been set to '").color(ChatColor.GRAY)

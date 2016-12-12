@@ -21,7 +21,7 @@ public class AboutCommand extends Command {
 		
 		ComponentBuilder message = Main.getPrefix()
 		.append("Plugins by TheTonyk for ").color(ChatColor.GRAY)
-		.append(Main.name).color(ChatColor.GREEN);
+		.append(Main.NAME).color(ChatColor.GREEN);
 		
 		sender.sendMessage(message.create());
 		

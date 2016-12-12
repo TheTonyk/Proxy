@@ -15,7 +15,7 @@ public class DatabaseManager {
 	private static BasicDataSource data;
 	
 	private static String HOST = Main.getConfiguration().getString("SQLHost", "localhost");
-	private static String DB = Main.getConfiguration().getString("SQLDatabase", Main.name.toLowerCase().replaceAll(" ", ""));
+	private static String DB = Main.getConfiguration().getString("SQLDatabase", Main.NAME.toLowerCase().replaceAll(" ", ""));
 	private static String USER = Main.getConfiguration().getString("SQLUser", "root");
 	private static String PASS = Main.getConfiguration().getString("SQLPass", "");
 	
