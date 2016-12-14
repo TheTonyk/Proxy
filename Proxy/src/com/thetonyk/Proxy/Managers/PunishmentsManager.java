@@ -42,9 +42,7 @@ public class PunishmentsManager {
 		
 		ProxiedPlayer player = proxy.getPlayer(uuid);
 		
-		if (player == null) return true;
-		
-		if (type != Punishment.MUTE) {
+		if (type != Punishment.MUTE && player != null) {
 			
 			BaseComponent[] message = getMessage(reason, type, duration);
 			

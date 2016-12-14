@@ -23,8 +23,9 @@ public class Settings {
 	private boolean mentions;
 	private boolean messages;
 	private Set<UUID> ignored;
+	private boolean stats;
 	
-	private Settings(int id, UUID player, boolean players, boolean chat, boolean mentions, boolean messages, String ignored) {
+	private Settings(int id, UUID player, boolean players, boolean chat, boolean mentions, boolean messages, String ignored, boolean stats) {
 		
 		this.id = id;
 		this.player = player;
@@ -32,6 +33,7 @@ public class Settings {
 		this.chat = chat;
 		this.mentions = mentions;
 		this.messages = messages;
+		this.stats = stats;
 		
 		Type type = new TypeToken<Set<UUID>>(){}.getType();
 		this.ignored = ignored.length() < 1 ? new HashSet<UUID>() : gson.fromJson(ignored, type);
@@ -114,6 +116,20 @@ public class Settings {
 		
 	}
 	
+	public boolean getStats() {
+		
+		return this.stats;
+		
+	}
+	
+	public void setStats(boolean stats) throws SQLException {
+		
+		this.stats = stats;
+		
+		DatabaseManager.updateQuery("UPDATE settings SET stats = " + (stats ? 1 : 0) + " WHERE id = " + this.id + ";");
+		
+	}
+	
 	public static Settings getSettings(UUID uuid) throws SQLException {
 		
 		int id = Integer.valueOf(PlayersManager.getField(uuid, "id"));
@@ -129,8 +145,9 @@ public class Settings {
 			boolean mentions = query.getBoolean("mentions");
 			boolean messages = query.getBoolean("messages");
 			String ignored = query.getString("ignored");
+			boolean stats = query.getBoolean("stats");
 			
-			return new Settings(id, uuid, players, chat, mentions, messages, ignored);
+			return new Settings(id, uuid, players, chat, mentions, messages, ignored, stats);
 		
 		}
 		
