@@ -35,6 +35,14 @@ public class IgnoreCommand extends Command implements TabExecutor {
 	
 	public void execute(CommandSender sender, String[] args) {
 		
+		if (!(sender instanceof ProxiedPlayer)) {
+			
+			ComponentBuilder message = Main.getPrefix().append("This command can't only be used by a player.").color(ChatColor.GRAY);
+			sender.sendMessage(message.create());
+			return;
+			
+		}
+		
 		ProxiedPlayer player = (ProxiedPlayer) sender;
 		
 		try {

@@ -22,7 +22,9 @@ public class UnpunishCommand extends Command {
 	
 	public void execute(CommandSender sender, String[] args) {
 			
-		ProxiedPlayer player = (ProxiedPlayer) sender;
+		ProxiedPlayer player = null;
+		
+		if (sender instanceof ProxiedPlayer) player = (ProxiedPlayer) sender;
 		
 		if (args.length < 1) {
 			
@@ -58,7 +60,7 @@ public class UnpunishCommand extends Command {
 				
 			}
 			
-			int playerId = Integer.valueOf(PlayersManager.getField(player.getUniqueId(), "id"));
+			int playerId = player == null ? 0 : Integer.valueOf(PlayersManager.getField(player.getUniqueId(), "id"));
 			
 			DatabaseManager.updateQuery("UPDATE punishments SET cancelled = " + playerId + " WHERE id = " + id + ";");
 			

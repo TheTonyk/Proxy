@@ -35,7 +35,7 @@ public class PunishmentsManager {
 	public static boolean punish(UUID uuid, Punishment type, long duration, UUID operator, Reasons reason, String server) throws SQLException {
 		
 		int id = Integer.valueOf(PlayersManager.getField(uuid, "id"));
-		int operatorId = Integer.valueOf(PlayersManager.getField(operator, "id"));
+		int operatorId = operator == null ? 0 : Integer.valueOf(PlayersManager.getField(operator, "id"));
 		long time = new Date().getTime();
 		
 		DatabaseManager.updateQuery("INSERT INTO punishments (`type`, `player`, `date`, `duration`, `operator`, `reason`, `server`, `cancelled`) VALUES ('" + type.toString() + "', " + id + ", " + time + ", " + duration + ", " + operatorId + ", '" + reason.toString() + "', '" + server + "', -1);");

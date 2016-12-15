@@ -398,7 +398,7 @@ public class PlayersManager implements Listener {
 			}
 			
 			BaseComponent[] alert = message.append(".").retain(FormatRetention.NONE).color(ChatColor.GRAY).create();
-			proxy.getPlayers().stream().filter(p -> p.hasPermission("proxy.alerts")).filter(p -> p.getServer().getInfo().equals(server)).forEach(p -> p.sendMessage(alert));
+			proxy.getPlayers().stream().filter(p -> p.hasPermission("proxy.alerts")).filter(p -> p.getServer() != null && p.getServer().getInfo().equals(server)).forEach(p -> p.sendMessage(alert));
 		
 		} catch (SQLException exception) {
 			

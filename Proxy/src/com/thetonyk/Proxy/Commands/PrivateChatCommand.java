@@ -45,14 +45,6 @@ public class PrivateChatCommand extends Command {
 		Collection<ProxiedPlayer> players = proxy.getPlayers();
 		Set<ProxiedPlayer> staffs = players.stream().filter(p -> p.hasPermission("proxy.privatechat")).collect(Collectors.toSet());
 		
-		if (staffs.size() < 2) {
-			
-			ComponentBuilder message = Main.getPrefix().append("There are no other staff online.").color(ChatColor.GRAY);
-			sender.sendMessage(message.create());
-			return;
-			
-		}
-		
 		BaseComponent[] message = new ComponentBuilder("StaffChat ").color(ChatColor.GOLD)
 		.append("| ").color(ChatColor.DARK_GRAY)
 		.append(sender.getName()).color(ChatColor.GRAY)
@@ -60,6 +52,7 @@ public class PrivateChatCommand extends Command {
 		.append(arg).color(ChatColor.WHITE).create();
 		
 		staffs.stream().forEach(s -> s.sendMessage(message));
+		proxy.getConsole().sendMessage(message);
 		
 	}
 	

@@ -1,16 +1,18 @@
 package com.thetonyk.Proxy.Commands;
 
-import java.util.Collection;
-
 import com.thetonyk.Proxy.Main;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
 public class BroadcastCommand extends Command {
+	
+	private static ProxyServer proxy = ProxyServer.getInstance();
 	
 	public BroadcastCommand() {
 		
@@ -20,14 +22,36 @@ public class BroadcastCommand extends Command {
 	
 	public void execute(CommandSender sender, String[] args) {
 		
-		ProxiedPlayer player = (ProxiedPlayer) sender;
-		Collection<ProxiedPlayer> toSend = player.getServer().getInfo().getPlayers();
+		ServerInfo server;
 		
-		if (args.length < 1) {
+		if (args.length < 1 || (args.length < 2 && !(sender instanceof ProxiedPlayer))) {
 			
-			ComponentBuilder message = Main.getPrefix().append("Usage: /broadcast <message>").color(ChatColor.GRAY);
+			ComponentBuilder message = Main.getPrefix().append("Usage: /broadcast <message> [server]").color(ChatColor.GRAY);
 			sender.sendMessage(message.create());
 			return;
+			
+		} else {
+			
+			ProxiedPlayer player = (ProxiedPlayer) sender;
+			server = player.getServer().getInfo();
+			
+		}
+		
+		if (args.length >= 2) {
+			
+			server = proxy.getServerInfo(args[1]);
+			
+			if (server == null) {
+				
+				ComponentBuilder message = Main.getPrefix()
+				.append("'").color(ChatColor.GRAY)
+				.append(args[1]).color(ChatColor.GOLD)
+				.append("' is not a server.").color(ChatColor.GRAY);
+				
+				sender.sendMessage(message.create());
+				return;
+				
+			}
 			
 		}
 		
@@ -42,7 +66,7 @@ public class BroadcastCommand extends Command {
 		ComponentBuilder message = new ComponentBuilder("⫸ ").color(ChatColor.DARK_GRAY)
 		.append(arg).color(ChatColor.AQUA).bold(true);		
 				
-		toSend.stream().forEach(p -> p.sendMessage(message.create()));
+		server.getPlayers().stream().forEach(p -> p.sendMessage(message.create()));
 		
 	}
 	

@@ -324,8 +324,8 @@ public class InfoCommand extends Command implements TabExecutor {
 					
 				}
 				
-				UUID operatorUUID = PlayersManager.getUUID(operator);
-				String operatorName = PlayersManager.getField(operatorUUID, "name");
+				UUID operatorUUID = operator < 1 ? null : PlayersManager.getUUID(operator);
+				String operatorName = operatorUUID == null ? "Console" : PlayersManager.getField(operatorUUID, "name");
 				
 				UUID cancellerUUID = cancelled < 0 ? null : PlayersManager.getUUID(cancelled);
 				String cancellerName = cancelled < 0 ? null : PlayersManager.getField(cancellerUUID, "name");

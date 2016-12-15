@@ -29,28 +29,33 @@ public class ChatCommand extends Command implements TabExecutor {
 	
 	public void execute(CommandSender sender, String[] args) {
 		
-		ProxiedPlayer player = (ProxiedPlayer) sender;
-		ServerInfo server = player.getServer().getInfo();
+		ServerInfo server;
+		ProxiedPlayer player = null;
 		
-		if (args.length < 1 || (!args[0].equalsIgnoreCase("clear") && !args[0].equalsIgnoreCase("mute"))) {
+		if (args.length < 1 || (args.length < 2 && !(sender instanceof ProxiedPlayer)) || (!args[0].equalsIgnoreCase("clear") && !args[0].equalsIgnoreCase("mute"))) {
 			
 			ComponentBuilder message = Main.getPrefix().append("Usage: /chat <mute|clear> [server]").color(ChatColor.GRAY);
 			sender.sendMessage(message.create());
 			return;
 			
+		} else {
+			
+			player = (ProxiedPlayer) sender;
+			server = player.getServer().getInfo();
+			
 		}
 		
-		if (args.length > 1) {
-			
-			Set<String> servers = proxy.getServers().keySet();
+		if (args.length >= 2) {
 			
 			if (args[1].equalsIgnoreCase("all")) {
 				
 				server = null;
 				
 			} else {
+				
+				server = proxy.getServerInfo(args[1]);
 			
-				if (!servers.contains(args[1])) {
+				if (server == null) {
 					
 					ComponentBuilder message = Main.getPrefix()
 					.append("'").color(ChatColor.GRAY)
@@ -61,8 +66,6 @@ public class ChatCommand extends Command implements TabExecutor {
 					return;
 					
 				}
-				
-				server = proxy.getServerInfo(args[1]);
 				
 			}
 			
@@ -86,7 +89,7 @@ public class ChatCommand extends Command implements TabExecutor {
 				
 				server.getPlayers().stream().forEach(p -> p.sendMessage(message));
 				
-				if (!server.equals(player.getServer().getInfo())) {
+				if (player == null || !server.equals(player.getServer().getInfo())) {
 					
 					ComponentBuilder confirm = Main.getPrefix()
 					.append("The chat has been cleared in the server '").color(ChatColor.GRAY)
@@ -114,7 +117,7 @@ public class ChatCommand extends Command implements TabExecutor {
 					
 					server.getPlayers().stream().forEach(p -> p.sendMessage(message));
 					
-					if (!server.equals(player.getServer().getInfo())) {
+					if (player == null || !server.equals(player.getServer().getInfo())) {
 						
 						ComponentBuilder confirm = Main.getPrefix()
 						.append("The chat is now unmuted in the server '").color(ChatColor.GRAY)
@@ -140,7 +143,7 @@ public class ChatCommand extends Command implements TabExecutor {
 				
 				server.getPlayers().stream().forEach(p -> p.sendMessage(message));
 				
-				if (!server.equals(player.getServer().getInfo())) {
+				if (player == null || !server.equals(player.getServer().getInfo())) {
 					
 					ComponentBuilder confirm = Main.getPrefix()
 					.append("The chat is now muted in the server '").color(ChatColor.GRAY)

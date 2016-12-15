@@ -41,9 +41,6 @@ public class MessageCommand extends Command implements TabExecutor {
 	
 	public void execute(CommandSender sender, String[] args) {
 		
-		ProxiedPlayer player = (ProxiedPlayer) sender;
-		ServerInfo server = player.getServer().getInfo();
-		
 		if (args.length < 2) {
 			
 			ComponentBuilder message = Main.getPrefix().append("Usage: /message <player> <message>").color(ChatColor.GRAY);
@@ -54,7 +51,7 @@ public class MessageCommand extends Command implements TabExecutor {
 		
 		ProxiedPlayer sendTo = proxy.getPlayer(args[0]);
 		
-		if (sendTo == null) {
+		if (sendTo == null && !args[0].equalsIgnoreCase("CONSOLE")) {
 			
 			ComponentBuilder message = Main.getPrefix()
 			.append("The player '").color(ChatColor.GRAY)
@@ -66,6 +63,50 @@ public class MessageCommand extends Command implements TabExecutor {
 			
 		}
 		
+		String arg = args[1];
+		
+		for (int i = 2; i < args.length; i++) {
+			
+			arg += " " + args[i];
+			
+		}
+		
+		if (!(sender instanceof ProxiedPlayer) || sendTo == null) {
+			
+			ComponentBuilder message = new ComponentBuilder("Private ").color(ChatColor.GOLD)
+			.append("| ").color(ChatColor.DARK_GRAY)
+			.append(sendTo == null ? "CONSOLE" : sendTo.getName()).color(ChatColor.GRAY)
+			.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, 
+					new ComponentBuilder("Send another message to ").color(ChatColor.GRAY)
+					.append(sendTo == null ? "CONSOLE" : sendTo.getName()).color(ChatColor.GREEN)
+					.append(".").color(ChatColor.GRAY).create()))
+			.event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/message " + (sendTo == null ? "CONSOLE" : sendTo.getName()) + " "))
+			.append(" ⫷ ").retain(FormatRetention.NONE).color(ChatColor.RED)
+			.append(arg).color(ChatColor.WHITE);
+			
+			sender.sendMessage(message.create());
+			
+			message = new ComponentBuilder("Private ").color(ChatColor.GOLD)
+			.append("| ").color(ChatColor.DARK_GRAY)
+			.append(sender.getName()).color(ChatColor.GRAY)
+			.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, 
+					new ComponentBuilder("Reply to ").color(ChatColor.GRAY)
+					.append(sender.getName()).color(ChatColor.GREEN)
+					.append(".").color(ChatColor.GRAY).create()))
+			.event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/message " + sender.getName() + " "))
+			.append(" ⫸ ").retain(FormatRetention.NONE).color(ChatColor.GREEN)
+			.append(arg).color(ChatColor.WHITE);
+					
+			if (sendTo == null) proxy.getConsole().sendMessage(message.create());
+			else sendTo.sendMessage(message.create());
+			
+			lastMessage.put(sendTo == null ? null : sendTo.getUniqueId(), sender.getName());
+			return;
+			
+		}
+		
+		ProxiedPlayer player = (ProxiedPlayer) sender;
+		ServerInfo server = player.getServer().getInfo();
 		ServerInfo sendToServer = sendTo.getServer().getInfo();
 		
 		if (player.getUniqueId().equals(sendTo.getUniqueId())) {
@@ -116,14 +157,6 @@ public class MessageCommand extends Command implements TabExecutor {
 			
 		}
 		
-		String arg = args[1];
-		
-		for (int i = 2; i < args.length; i++) {
-			
-			arg += " " + args[i];
-			
-		}
-		
 		ComponentBuilder message = new ComponentBuilder("Private ").color(ChatColor.GOLD)
 		.append("| ").color(ChatColor.DARK_GRAY)
 		.append(sendTo.getName()).color(ChatColor.GRAY)
@@ -170,7 +203,7 @@ public class MessageCommand extends Command implements TabExecutor {
 	
 	public List<String> onTabComplete(CommandSender sender, String[] args) {
 		
-		ProxiedPlayer player = (ProxiedPlayer) sender;
+		ProxiedPlayer player = sender instanceof ProxiedPlayer ? (ProxiedPlayer) sender : null;
 		List<String> suggestions = new ArrayList<>();
 		
 		switch (args.length) {
@@ -178,7 +211,7 @@ public class MessageCommand extends Command implements TabExecutor {
 			case 1:
 				Set<String> online = new HashSet<>();
 				
-				proxy.getPlayers().stream().filter(p -> !p.equals(player)).forEach(p -> online.add(p.getName()));
+				proxy.getPlayers().stream().filter(p -> player == null || !p.equals(player)).forEach(p -> online.add(p.getName()));
 				suggestions.addAll(online);
 				break;
 			default:

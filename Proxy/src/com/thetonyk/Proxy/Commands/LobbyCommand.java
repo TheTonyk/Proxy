@@ -23,6 +23,14 @@ public class LobbyCommand extends Command {
 	
 	public void execute(CommandSender sender, String[] args) {
 		
+		if (!(sender instanceof ProxiedPlayer)) {
+			
+			ComponentBuilder message = Main.getPrefix().append("This command can't only be used by a player.").color(ChatColor.GRAY);
+			sender.sendMessage(message.create());
+			return;
+			
+		}
+		
 		ProxiedPlayer player = (ProxiedPlayer) sender;
 		ServerInfo server = player.getServer().getInfo();
 		ServerInfo lobby = proxy.getServerInfo("lobby");

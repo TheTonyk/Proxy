@@ -28,11 +28,23 @@ public class CommandspyCommand extends Command implements TabExecutor {
 	
 	public void execute(CommandSender sender, String[] args) {
 		
-		ProxiedPlayer player = (ProxiedPlayer) sender;
-		UUID uuid = player.getUniqueId();
-		ServerInfo server = player.getServer().getInfo();
+		ProxiedPlayer player = null;
+		ServerInfo server = null;
 		
-		if (args.length > 1) {
+		if (args.length < 1 && !(sender instanceof ProxiedPlayer)) {
+			
+			ComponentBuilder message = Main.getPrefix().append("Usage: /commandspy [server] [player]").color(ChatColor.GRAY);
+			sender.sendMessage(message.create());
+			return;
+			
+		} else {
+			
+			player = (ProxiedPlayer) sender;
+			server = player.getServer().getInfo();
+			
+		}
+		
+		if (args.length >= 2) {
 			
 			player = proxy.getPlayer(args[1]);
 			
@@ -49,6 +61,8 @@ public class CommandspyCommand extends Command implements TabExecutor {
 			}
 			
 		}
+		
+		UUID uuid = player != null ? player.getUniqueId() : null;
 		
 		if (args.length >= 1) {
 			
@@ -77,45 +91,51 @@ public class CommandspyCommand extends Command implements TabExecutor {
 			
 			Main.cmdspy.remove(uuid);
 			
-			if (!sender.getName().equalsIgnoreCase(player.getName())) {
-				
-				ComponentBuilder message = Main.getPrefix()
-				.append("The cmdspy of '").color(ChatColor.GRAY)
-				.append(player.getName()).color(ChatColor.GREEN)
-				.append("' has been disabled.").color(ChatColor.GRAY);
-				
-				sender.sendMessage(message.create());
-				
-			}
-			
 			ComponentBuilder message = Main.getPrefix().append("Your cmdspy has been disabled.").color(ChatColor.GRAY);
 			
+			if (player == null || player.getName().equalsIgnoreCase(sender.getName())) {
+			
+				sender.sendMessage(message.create());
+				return;
+			
+			}
+			
 			player.sendMessage(message.create());
+				
+			message = Main.getPrefix()
+			.append("The cmdspy of '").color(ChatColor.GRAY)
+			.append(player.getName()).color(ChatColor.GREEN)
+			.append("' has been disabled.").color(ChatColor.GRAY);
+				
+			sender.sendMessage(message.create());
 			return;
 			
 		}
 		
 		Main.cmdspy.put(uuid, server);
 		
-		if (!sender.getName().equalsIgnoreCase(player.getName())) {
-			
-			ComponentBuilder message = Main.getPrefix()
-			.append("The cmdspy of '").color(ChatColor.GRAY)
-			.append(player.getName()).color(ChatColor.GREEN)
-			.append("' has been enabled on '").color(ChatColor.GRAY)
-			.append(server == null ? "all" : server.getName()).color(ChatColor.GOLD)
-			.append("'.").color(ChatColor.GRAY);
-			
-			sender.sendMessage(message.create());
-			
-		}
-		
 		ComponentBuilder message = Main.getPrefix()
 		.append("Your cmdspy has been enabled on '").color(ChatColor.GRAY)
 		.append(server == null ? "all" : server.getName()).color(ChatColor.GOLD)
 		.append("'.").color(ChatColor.GRAY);
 		
+		if (player == null || player.getName().equalsIgnoreCase(sender.getName())) {
+			
+			sender.sendMessage(message.create());
+			return;
+		
+		}
+		
 		player.sendMessage(message.create());
+			
+		message = Main.getPrefix()
+		.append("The cmdspy of '").color(ChatColor.GRAY)
+		.append(player.getName()).color(ChatColor.GREEN)
+		.append("' has been enabled on '").color(ChatColor.GRAY)
+		.append(server == null ? "all" : server.getName()).color(ChatColor.GOLD)
+		.append("'.").color(ChatColor.GRAY);
+		
+		sender.sendMessage(message.create());
 		
 	}
 	

@@ -43,7 +43,14 @@ public class BanCommand extends Command implements TabExecutor {
 	
 	public void execute(CommandSender sender, String[] args) {
 		
-		ProxiedPlayer player = (ProxiedPlayer) sender;
+		UUID operator = null;
+		
+		if (sender instanceof ProxiedPlayer) {
+			
+			ProxiedPlayer player = (ProxiedPlayer) sender;
+			operator = player.getUniqueId();
+			
+		}
 		
 		if (args.length < 1) {
 			
@@ -73,7 +80,7 @@ public class BanCommand extends Command implements TabExecutor {
 			UUID uuid = UUID.fromString(query.getString("uuid"));
 			Rank rank = Rank.valueOf(query.getString("rank"));
 			ProxiedPlayer punished = proxy.getPlayer(uuid);
-			Rank senderRank = PlayersManager.getRank(player.getUniqueId());
+			Rank senderRank = operator == null ? Rank.ADMIN : PlayersManager.getRank(operator);
 			
 			if (rank == Rank.ADMIN && senderRank != Rank.ADMIN) return;
 			
@@ -211,7 +218,7 @@ public class BanCommand extends Command implements TabExecutor {
 				
 			}
 			
-			PunishmentsManager.punish(uuid, type, duration, player.getUniqueId(), reason, (punished == null ? "" : punished.getServer().getInfo().getName()));
+			PunishmentsManager.punish(uuid, type, duration, operator, reason, (punished == null ? "" : punished.getServer().getInfo().getName()));
 			
 		} catch (IllegalArgumentException exception) {	
 			
