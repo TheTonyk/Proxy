@@ -280,7 +280,7 @@ public class PlayersManager implements Listener {
 			
 			int id = Integer.valueOf(getField(uuid, "id"));
 			
-			if (!DatabaseManager.exist("settings", "id", null, id)) DatabaseManager.updateQuery("INSERT INTO settings (`id`, `players`, `chat`, `mentions`, `messages`, `ignored`) VALUES (" + id + ", 1, 1, 1, 1, '');");
+			if (!DatabaseManager.exist("settings", "id", null, id)) DatabaseManager.updateQuery("INSERT INTO settings (`id`, `players`, `chat`, `mentions`, `messages`, `ignored`, `stats`) VALUES (" + id + ", 1, 1, 1, 1, '', 1);");
 				
 			int isBanned = PunishmentsManager.isPunished(uuid, Punishment.BAN);
 			Set<UUID> isIPBanned = PunishmentsManager.isIPBanned(uuid);
