@@ -89,7 +89,7 @@ public class HelpopCommand extends Command implements TabExecutor {
 			.append(" ⫸ ").color(ChatColor.DARK_GRAY)
 			.append(arg).color(ChatColor.WHITE);
 			
-			sender.sendMessage(message.create());
+			player.sendMessage(message.create());
 			return;		
 			
 		}
