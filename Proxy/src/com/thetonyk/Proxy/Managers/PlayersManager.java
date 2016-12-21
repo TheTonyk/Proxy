@@ -59,7 +59,7 @@ import net.md_5.bungee.event.EventHandler;
 public class PlayersManager implements Listener {
 	
 	private static ProxyServer proxy = ProxyServer.getInstance();
-	private static List<String> hiddenCommands = Lists.newArrayList("message", "msg", "tell", "w", "private", "p", "reply", "r");
+	private static List<String> hiddenCommands = Lists.newArrayList("message", "msg", "tell", "w", "private", "p", "reply", "r", "helpop");
 	public static Set<UUID> cooldown = new HashSet<>();
 	
 	public static UUID getUUID(int id) throws SQLException {
