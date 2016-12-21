@@ -13,7 +13,7 @@ public class HelpCommand extends Command {
 	
 	public HelpCommand() {
 		
-		super("help", "proxy.help", "h", "?");
+		super("help", "proxy.help", "?");
 		
 	}
 	

@@ -1,6 +1,5 @@
 package com.thetonyk.Proxy.Commands;
 
-import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -42,8 +41,7 @@ public class PrivateChatCommand extends Command {
 			
 		}
 		
-		Collection<ProxiedPlayer> players = proxy.getPlayers();
-		Set<ProxiedPlayer> staffs = players.stream().filter(p -> p.hasPermission("proxy.privatechat")).collect(Collectors.toSet());
+		Set<ProxiedPlayer> staffs = proxy.getPlayers().stream().filter(p -> p.hasPermission("proxy.privatechat")).collect(Collectors.toSet());
 		
 		BaseComponent[] message = new ComponentBuilder("StaffChat ").color(ChatColor.GOLD)
 		.append("| ").color(ChatColor.DARK_GRAY)

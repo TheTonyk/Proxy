@@ -22,6 +22,7 @@ public class PermissionsManager {
 		player.setPermission("proxy.ignore", true);
 		player.setPermission("proxy.lobby", true);
 		player.setPermission("proxy.message", true);
+		player.setPermission("proxy.helpop", true);
 		
 		switch (rank) {
 			case PLAYER:
@@ -36,6 +37,7 @@ public class PermissionsManager {
 		player.setPermission("proxy.alerts", true);
 		player.setPermission("proxy.punish", true);
 		player.setPermission("proxy.info", true);
+		player.setPermission("proxy.replyhelpop", true);
 		
 		if (rank == Rank.MOD) return;
 		
