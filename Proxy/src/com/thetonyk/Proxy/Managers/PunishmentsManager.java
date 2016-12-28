@@ -41,8 +41,10 @@ public class PunishmentsManager {
 		DatabaseManager.updateQuery("INSERT INTO punishments (`type`, `player`, `date`, `duration`, `operator`, `reason`, `server`, `cancelled`) VALUES ('" + type.toString() + "', " + id + ", " + time + ", " + duration + ", " + operatorId + ", '" + reason.toString() + "', '" + server + "', -1);");
 		
 		ProxiedPlayer player = proxy.getPlayer(uuid);
+		ProxiedPlayer sender = proxy.getPlayer(operator);
+		String name = PlayersManager.getField(uuid, "name");
 		
-		if (type != Punishment.MUTE && player != null) {
+		if (player != null && type != Punishment.MUTE) {
 			
 			BaseComponent[] message = getMessage(reason, type, duration);
 			
@@ -50,11 +52,23 @@ public class PunishmentsManager {
 			
 		}
 		
-		if (!type.withDuration()) return true;
+		if (!type.withDuration) return true;
+		
+		BaseComponent[] announce = getAnnouncement(name, reason, type, duration);
+		Collection<ProxiedPlayer> onlines = new ArrayList<>();
+		
+		if (player != null) {
 			
-		BaseComponent[] announce = getAnnouncement(player.getName(), reason, type, duration);
-		Collection<ProxiedPlayer> onlines = player.getServer().getInfo().getPlayers();
-		onlines.stream().forEach(p -> p.sendMessage(announce));
+			onlines = player.getServer().getInfo().getPlayers();
+			onlines.stream().forEach(p -> p.sendMessage(announce));
+			
+		}
+		
+		if (sender != null && (player == null || !player.getServer().equals(sender.getServer()))) {
+			
+			sender.sendMessage(announce);
+			
+		}
 		
 		if (type != Punishment.BAN) return true;
 		
